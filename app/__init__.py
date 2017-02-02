@@ -20,12 +20,14 @@ twitter = oauth.remote_app(
 
 @app.route('/')
 def index():
+    if 'twitter_user' in session:
+        return render_template('authorized_index.html')
     return render_template('index.html')
 
 
 @app.route('/login')
 def login():
-    if 'twitter_token' not in session or session['twitter_token'] is None:
+    if 'twitter_user' not in session:
         return twitter.authorize(
             callback=url_for(
                 'oauth_authorized',
@@ -41,19 +43,30 @@ def get_twitter_token(token=None):
 
 @app.route('/oauth_authorized')
 @twitter.authorized_handler
-def oauth_authorized(resp):
+def oauth_authorized(oauth_response):
     next_url = request.args.get('next') or url_for('index')
-    if resp is None:
+    if oauth_response is None:
         flash('You denied the request to sign in.')
         return redirect(next_url)
 
     session['twitter_token'] = (
-        resp['oauth_token'],
-        resp['oauth_token_secret']
+        oauth_response['oauth_token'],
+        oauth_response['oauth_token_secret']
     )
-    session['twitter_user'] = resp['screen_name']
 
-    flash('Welcome, @%s!' % resp['screen_name'])
+    # We will use the presence of twitter_user in session to indicate if the
+    # user is logged in or not.
+    session['twitter_user'] = oauth_response['screen_name']
+    flash('Welcome, @%s!' % oauth_response['screen_name'])
+
+    # Once authorized, get some basic info about the user.
+    tw_response = twitter.get(
+        'users/show.json?screen_name=%s' % session['twitter_user'])
+    if tw_response.status == 200:
+        session['user_info'] = tw_response.data
+    else:
+        flash('There was an error in reading you Twitter info.')
+
     return redirect(next_url)
 
 
@@ -61,5 +74,6 @@ def oauth_authorized(resp):
 def logout():
     session.pop('twitter_token', None)
     session.pop('twitter_user', None)
+    session.pop('user_info', None)
     flash('You were successfully logged out.')
     return redirect(request.args.get('next') or url_for('index'))

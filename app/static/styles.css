@@ -1,0 +1,10 @@
+/* Overrides for Bootstrap rules, and also some custom styles */
+.navbar .nav-item .tw-signin-img {
+  margin-top: -0.2em;
+}
+
+.navbar .nav-item .tw-avatar {
+  height: 1.6em;
+  width: 1.6em;
+  margin-top: -0.2em;
+}
