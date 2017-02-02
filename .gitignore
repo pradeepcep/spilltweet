@@ -1,3 +1,4 @@
 # Ignore the virtualenv and generated files
 flask/
 *.pyc
+config.py
