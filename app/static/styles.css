@@ -8,3 +8,14 @@
   width: 1.6em;
   margin-top: -0.2em;
 }
+
+#preview {
+  border: 1px solid #000000;
+  display: inline-block;
+  padding: 1em;
+  visibility: hidden;
+  position: absolute; /* so that it doesn't mess with the layout. */
+  bottom: 0;
+  left: 0;
+  z-index: -99999;
+}

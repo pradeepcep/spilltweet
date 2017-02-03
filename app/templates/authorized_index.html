@@ -1,7 +1,49 @@
 {% extends "skeleton.html" %}
 
+{# Include the HTML2Canvas library only after authentication #}
+{% block scripts %}
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"
+    integrity="sha256-c3RzsUWg+y2XljunEQS0LqWdQ04X1D3j22fd/8JCAKw="
+    crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+function updatePreview() {
+  $("#preview").html($("#input").val());
+  html2canvas($("#preview"), {
+    onrendered: function(canvas) {
+      canvas.id="output";
+      $("#output-wrapper").empty().append(canvas);
+    }
+  });
+}
+
+$(document).ready(function() {
+  updatePreview();
+});
+</script>
+{% endblock %}
+
 {% block content %}
-<p>
-  Authorized!
-</p>
+<div class="container pt-2">
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col-9">
+          <h5>Enter your text here:</h5>
+        </div>
+        <div class="col text-right">
+          <button type="button" class="btn btn-primary btn-sm a"
+              onclick="updatePreview()">Preview</button>
+        </div>
+      </div>
+      <textarea id="input" style="width: 100%;"></textarea>
+    </div>
+    <div class="col">
+      <h5>Preview:</h5>
+      <div id="output-wrapper"></div>
+    </div>
+  </div>
+</div>
+<div id="preview">The preview goes here...</div>
 {% endblock %}
