@@ -9,13 +9,20 @@
 
 <script type="text/javascript">
 function updatePreview() {
-  $("#preview").html($("#input").val());
-  html2canvas($("#preview"), {
-    onrendered: function(canvas) {
-      canvas.id="output";
-      $("#output-wrapper").empty().append(canvas);
-    }
-  });
+  // Display a message on the output when input is empty.
+  if (!$("#input").val()) {
+    $("#output-wrapper").empty().html('<span class="text-muted">\
+        <i>To see the output, enter text and hit <b>Preview</b>.</i></span>');
+  }
+  else {
+    $("#preview").html($("#input").val());
+    html2canvas($("#preview"), {
+      onrendered: function(canvas) {
+        canvas.id="output";
+        $("#output-wrapper").empty().append(canvas);
+      }
+    });
+  }
 }
 
 $(document).ready(function() {
