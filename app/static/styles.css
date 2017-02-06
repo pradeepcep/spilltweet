@@ -9,6 +9,12 @@
   margin-top: -0.2em;
 }
 
+img.logo {
+  width: 1.5em;
+  height: 1.5em;
+  margin-bottom: 0.2em;
+}
+
 #preview {
   border: 1px solid #000000;
   display: inline-block;

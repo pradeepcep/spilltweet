@@ -33,14 +33,22 @@ $(document).ready(function() {
           <h5>Enter your text here:</h5>
         </div>
         <div class="col text-right">
-          <button type="button" class="btn btn-primary btn-sm a"
+          <button type="button" class="btn btn-primary btn-sm"
               onclick="updatePreview()">Preview</button>
         </div>
       </div>
       <textarea id="input" style="width: 100%;"></textarea>
     </div>
     <div class="col">
-      <h5>Preview:</h5>
+      <div class="row">
+        <div class="col-9">
+          <h5>Preview:</h5>
+        </div>
+        <div class="col text-right">
+          <button type="button" class="btn btn-primary btn-sm"
+              onclick="javascript:void(0);">Tweet</button>
+        </div>
+      </div>
       <div id="output-wrapper"></div>
     </div>
   </div>

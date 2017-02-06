@@ -4,6 +4,9 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.ico') }}" />
+
   <link rel="stylesheet" type="text/css"
       href="{{ config['BOOTSTRAP_CSS_URL'] }}"
       integrity="{{ config['BOOTSTRAP_CSS_SUM'] }}"
@@ -40,7 +43,10 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="{{ url_for('index') }}">Spilltweet</a>
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='logo.png') }}" class="logo" />
+      <span class="logo-text">Spilltweet</span>
+    </a>
 
     <div class="collapse navbar-collapse" id="navbar-items">
       <ul class="navbar-nav ml-auto">
