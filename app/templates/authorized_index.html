@@ -15,7 +15,7 @@ function updatePreview() {
         <i>To see the output, enter text and hit <b>Preview</b>.</i></span>');
   }
   else {
-    $("#preview").html($("#input").val());
+    $("#preview").html($("#input").val().replace(/\n/g, '<br />'));
     html2canvas($("#preview"), {
       onrendered: function(canvas) {
         canvas.id="output";
