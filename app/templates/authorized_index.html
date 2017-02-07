@@ -21,16 +21,28 @@ function updatePreview() {
         canvas.id="output";
         $("#output-wrapper").empty().append('<img src="' +
             canvas.toDataURL("image/png") + '" />');
+        $("#imagedata").val(canvas.toDataURL("image/png"));
       }
     });
   }
 }
 
-function postTweet() {
+$(document).ready(function() {
+  updatePreview();
+});
+
+$(document).on("submit", "#tweet-form", function(event) {
   if ($("#output-wrapper").has("img").length > 0) {
     if ($("#output-wrapper > img").attr("src")) {
-      window.location.href = 'postimage/' +
-          $("#output-wrapper > img").attr('src');
+      $("#flashed-messages-wrapper").empty().append('\
+      <div class="alert alert-info alert-dismissable fade show" role="alert">\
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
+          <span aria-hidden="true">&times;</span>\
+        </button>\
+        Posting image as a tweet...\
+      </div>\
+      ');
+      return true;
     }
   }
   else {
@@ -42,11 +54,8 @@ function postTweet() {
       You must enter some text in the input and click Preview first.\
     </div>\
     ');
+    return false;
   }
-}
-
-$(document).ready(function() {
-  updatePreview();
 });
 </script>
 {% endblock %}
@@ -72,8 +81,11 @@ $(document).ready(function() {
           <h5>Preview:</h5>
         </div>
         <div class="col text-right">
-          <button type="button" class="btn btn-primary btn-sm"
-              onclick="postTweet()">Tweet</button>
+          <form method="post" action="{{ url_for('postimage') }}"
+              id="tweet-form">
+            <input type="hidden" id="imagedata" name="imagedata" value="" />
+            <button type="submit" class="btn btn-primary btn-sm">Tweet</button>
+          </form>
         </div>
       </div>
       <div id="output-wrapper"></div>

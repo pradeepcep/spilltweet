@@ -81,18 +81,24 @@ def logout():
     return redirect(request.args.get('next') or url_for('index'))
 
 
-@app.route('/postimage/<path:imagedata>', methods=['GET', 'POST'])
-def postimage(imagedata):
+@app.route('/postimage', methods=['GET', 'POST'])
+def postimage():
     # Don't allow if not logged in.
     if 'twitter_user' not in session:
         flash('You must login before you can post tweets.', 'danger')
         return redirect(url_for('index'))
 
+    if not request.form.get('imagedata'):
+        return redirect(url_for('index'))
+    else:
+        imagedata = request.form.get('imagedata')
+
     if imagedata and imagedata.startswith('data:image/png;base64,'):
         imagedata = imagedata.replace('data:image/png;base64,', '')
 
         # Allow for debugging without getting banned from Twitter :)
-        if environ.get('SPILLTWEET_DEBUG'):
+        if environ.get('SPILLTWEET_DEBUG') \
+                and environ.get('SPILLTWEET_DEBUG') == '1':
             # Generate a unique filename and save the image instead of posting.
             from base64 import b64decode
             from hashlib import sha512
