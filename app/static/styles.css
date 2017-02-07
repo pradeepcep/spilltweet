@@ -20,6 +20,7 @@ img.logo {
   display: inline-block;
   padding: 1em;
   visibility: hidden;
+  background-color: #ffffff;
   position: absolute; /* so that it doesn't mess with the layout. */
   bottom: 0;
   left: 0;
