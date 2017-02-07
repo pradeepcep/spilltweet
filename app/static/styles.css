@@ -1,4 +1,8 @@
 /* Overrides for Bootstrap rules, and also some custom styles */
+body {
+  font-family: Lato, sans-serif;
+}
+
 .navbar .nav-item .tw-signin-img {
   margin-top: -0.2em;
 }

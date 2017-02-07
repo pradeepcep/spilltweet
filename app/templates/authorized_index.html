@@ -3,8 +3,8 @@
 {# Include the HTML2Canvas library only after authentication #}
 {% block scripts %}
 <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"
-    integrity="sha256-c3RzsUWg+y2XljunEQS0LqWdQ04X1D3j22fd/8JCAKw="
+    src="{{ config['HTML2CANVAS_URL'] }}"
+    integrity="{{ config['HTML2CANVAS_SUM'] }}"
     crossorigin="anonymous"></script>
 
 <script type="text/javascript">

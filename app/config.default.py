@@ -25,3 +25,8 @@ BOOTSTRAP_JS_SUM = 'sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0i
 
 TETHER_JS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js'
 TETHER_JS_SUM = 'sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb'
+
+HTML2CANVAS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js'
+HTML2CANVAS_SUM = 'sha256-c3RzsUWg+y2XljunEQS0LqWdQ04X1D3j22fd/8JCAKw='
+
+FONT_URL = 'https://fonts.googleapis.com/css?family=Lato'
