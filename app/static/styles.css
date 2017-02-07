@@ -26,7 +26,7 @@ img.logo {
   visibility: hidden;
   background-color: #ffffff;
   position: absolute; /* so that it doesn't mess with the layout. */
-  bottom: 0;
+  top: 0;
   left: 0;
   z-index: -99999;
 }

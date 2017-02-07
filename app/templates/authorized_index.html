@@ -19,7 +19,8 @@ function updatePreview() {
     html2canvas($("#preview"), {
       onrendered: function(canvas) {
         canvas.id="output";
-        $("#output-wrapper").empty().append(canvas);
+        $("#output-wrapper").empty().append('<img src="' +
+            canvas.toDataURL("image/png") + '" />');
       }
     });
   }
