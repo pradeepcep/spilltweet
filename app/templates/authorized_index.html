@@ -26,6 +26,25 @@ function updatePreview() {
   }
 }
 
+function postTweet() {
+  if ($("#output-wrapper").has("img").length > 0) {
+    if ($("#output-wrapper > img").attr("src")) {
+      window.location.href = 'postimage/' +
+          $("#output-wrapper > img").attr('src');
+    }
+  }
+  else {
+    $("#flashed-messages-wrapper").empty().append('\
+    <div class="alert alert-warning alert-dismissable fade show" role="alert">\
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
+        <span aria-hidden="true">&times;</span>\
+      </button>\
+      You must enter some text in the input and click Preview first.\
+    </div>\
+    ');
+  }
+}
+
 $(document).ready(function() {
   updatePreview();
 });
@@ -54,7 +73,7 @@ $(document).ready(function() {
         </div>
         <div class="col text-right">
           <button type="button" class="btn btn-primary btn-sm"
-              onclick="javascript:void(0);">Tweet</button>
+              onclick="postTweet()">Tweet</button>
         </div>
       </div>
       <div id="output-wrapper"></div>

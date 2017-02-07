@@ -12,6 +12,7 @@ TWITTER_BASE_URL = 'https://api.twitter.com/1.1/'
 TWITTER_REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
 TWITTER_ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
 TWITTER_AUTHORIZE_URL = 'https://api.twitter.com/oauth/authenticate'
+TWITTER_MEDIA_UPLOAD_URL = 'https://upload.twitter.com/1.1/media/upload.json'
 
 # URLs for external styles and JS.
 JQUERY_URL = 'https://code.jquery.com/jquery-3.1.1.slim.min.js'

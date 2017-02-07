@@ -2,3 +2,4 @@
 flask/
 *.pyc
 config.py
+app/tmp/
