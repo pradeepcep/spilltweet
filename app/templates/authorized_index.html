@@ -92,5 +92,11 @@ $(document).on("submit", "#tweet-form", function(event) {
     </div>
   </div>
 </div>
-<div id="preview">The preview goes here...</div>
+
+{% endblock %}
+
+{% block closingcontent %}
+<div id="preview-wrapper">
+  <div id="preview"></div>
+</div>
 {% endblock %}

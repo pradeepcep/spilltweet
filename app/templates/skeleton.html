@@ -37,64 +37,69 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button"
-        data-toggle="collapse" data-target="#navbar-items"
-        aria-controls="navbar-items" aria-expanded="false"
-        aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <a class="navbar-brand" href="{{ url_for('index') }}">
-      <img src="{{ url_for('static', filename='logo.png') }}" class="logo" />
-      <span class="logo-text">Spilltweet</span>
-    </a>
-
-    <div class="collapse navbar-collapse" id="navbar-items">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Help</a>
-        </li>
-        {% if session.twitter_user %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-        </li>
-        <li class="nav-item">
-          <span class="navbar-text">
-            <img class="tw-avatar" src="{%
-              if session.user_info -%}
-              {{ session.user_info.profile_image_url_https }}{%-
-              else %}https://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png{%
-              endif %}"/>
-            {{ session.twitter_user }}
-          </span>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link"
-              href="{{ url_for('login') }}"><img
-              class="tw-signin-img" alt="Signin with Twitter"
-              src="{{ url_for('static', filename='tw-signin.png') }}"/></a>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
-
-  {# Display flashed messages #}
-  <div id="flashed-messages-wrapper" class="container-fluid p-0">
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }} alert-dismissable fade show" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+  <div id="body-wrapper">
+    <nav class="navbar navbar-toggleable-sm navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right" type="button"
+          data-toggle="collapse" data-target="#navbar-items"
+          aria-controls="navbar-items" aria-expanded="false"
+          aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      {{ message }}
-    </div>
-    {% endfor %}
-  {% endwith %}
-  </div>
 
-  {% block content %}{% endblock %}
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='logo.png') }}" class="logo" />
+        <span class="logo-text">Spilltweet</span>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbar-items">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Help</a>
+          </li>
+          {% if session.twitter_user %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+          <li class="nav-item">
+            <span class="navbar-text">
+              <img class="tw-avatar" src="{%
+                if session.user_info -%}
+                {{ session.user_info.profile_image_url_https }}{%-
+                else %}https://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png{%
+                endif %}"/>
+              {{ session.twitter_user }}
+            </span>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link"
+                href="{{ url_for('login') }}"><img
+                class="tw-signin-img" alt="Signin with Twitter"
+                src="{{ url_for('static', filename='tw-signin.png') }}"/></a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    {# Display flashed messages #}
+    <div id="flashed-messages-wrapper" class="container-fluid p-0">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissable fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endwith %}
+    </div>
+
+    {% block content %}{% endblock %}
+  </div>
+  {# In case we want to add some content just before body closes #}
+  {# Analyics code etc. #}
+  {% block closingcontent %}{% endblock %}
 </body>
 </html>
