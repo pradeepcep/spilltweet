@@ -1,6 +1,6 @@
 /* Overrides for Bootstrap rules, and also some custom styles */
 body {
-  font-family: Lato, sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .navbar .nav-item .tw-signin-img {
@@ -20,13 +20,21 @@ img.logo {
 }
 
 #preview {
-  border: 1px solid #000000;
   display: inline-block;
-  padding: 1em;
   visibility: hidden;
   background-color: #ffffff;
   position: absolute; /* so that it doesn't mess with the layout. */
   top: 0;
   left: 0;
   z-index: -99999;
+  /* Make image size independant of screen resolution by explicitly specifying
+   * the sizes in pixels. */
+  padding: 20px;
+  font-size: 16px;
+  max-width: 600px; /* conservative maximum sizes for now */
+  max-height: 600px;
+}
+
+#output-wrapper > img {
+  border: 1px solid #dddddd;
 }

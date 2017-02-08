@@ -30,4 +30,4 @@ TETHER_JS_SUM = 'sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1Dk
 HTML2CANVAS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js'
 HTML2CANVAS_SUM = 'sha256-c3RzsUWg+y2XljunEQS0LqWdQ04X1D3j22fd/8JCAKw='
 
-FONT_URL = 'https://fonts.googleapis.com/css?family=Lato'
+FONT_URL = 'https://fonts.googleapis.com/css?family=Source+Sans+Pro'
