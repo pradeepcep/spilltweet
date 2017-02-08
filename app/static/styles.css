@@ -37,6 +37,14 @@ img.logo {
   margin-bottom: 0.2em;
 }
 
+#input {
+  width: 100%;
+  padding: 1em;
+  border: 0.1em solid #efefef;
+  margin-top: 0.5em;
+  min-height: 20em;
+}
+
 #preview-wrapper {
   display: inline-block;
   visibility: hidden;
@@ -61,6 +69,14 @@ img.logo {
   max-height: 600px;
 }
 
-#output-wrapper > img {
+#output-wrapper {
+  padding: 1em;
+  border: none;
+  border-top: 0.1em solid #efefef;
+  margin-top: 0.5em;
+  min-height: 20em;
+}
+
+#output-wrapper img#preview-img {
   border: 1px solid #dddddd;
 }
