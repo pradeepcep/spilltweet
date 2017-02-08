@@ -20,7 +20,7 @@ function updatePreview() {
       onrendered: function(canvas) {
         canvas.id="output";
         $("#output-wrapper").empty().append('<img src="' +
-            canvas.toDataURL("image/png") + '" />');
+            canvas.toDataURL("image/png") + '" id="preview-img" />');
         $("#imagedata").val(canvas.toDataURL("image/png"));
       }
     });
@@ -61,25 +61,19 @@ $(document).on("submit", "#tweet-form", function(event) {
 {% endblock %}
 
 {% block content %}
-<div class="container pt-2">
+<div class="container-fluid pt-2">
   <div class="row">
     <div class="col">
       <div class="row">
-        <div class="col-9">
-          <h5>Enter your text here:</h5>
-        </div>
         <div class="col text-right">
           <button type="button" class="btn btn-primary btn-sm"
               onclick="updatePreview()">Preview</button>
         </div>
       </div>
-      <textarea id="input" style="width: 100%;"></textarea>
+      <textarea id="input" placeholder="Enter your text here..."></textarea>
     </div>
     <div class="col">
       <div class="row">
-        <div class="col-9">
-          <h5>Preview:</h5>
-        </div>
         <div class="col text-right">
           <form method="post" action="{{ url_for('postimage') }}"
               id="tweet-form">
@@ -88,7 +82,9 @@ $(document).on("submit", "#tweet-form", function(event) {
           </form>
         </div>
       </div>
-      <div id="output-wrapper"></div>
+      <div id="output-wrapper"
+          class="d-flex justify-content-center align-items-center bg-faded">
+      </div>
     </div>
   </div>
 </div>
