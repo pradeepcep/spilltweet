@@ -49,6 +49,9 @@
       <a class="navbar-brand" href="{{ url_for('index') }}">
         <img src="{{ url_for('static', filename='logo.png') }}" class="logo" />
         <span class="logo-text">Spilltweet</span>
+        {% if config['SPILLTWEET_DEBUG'] %}
+        <small><sup class="text-danger">DEBUG</sup></small>
+        {% endif %}
       </a>
 
       <div class="collapse navbar-collapse" id="navbar-items">

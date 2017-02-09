@@ -8,6 +8,13 @@ app = Flask(__name__)
 app.config.from_object('app.config')
 
 
+# Make templates debug-aware so that useful debugging info can be displayed
+# while debugging.
+if environ.get('SPILLTWEET_DEBUG') \
+        and environ.get('SPILLTWEET_DEBUG') == '1':
+    app.config['SPILLTWEET_DEBUG'] = True
+
+
 # Create the twitter object to interact with twitter OAuth.
 oauth = OAuth()
 twitter = oauth.remote_app(
