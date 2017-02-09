@@ -29,6 +29,7 @@ function updatePreview() {
 
 $(document).ready(function() {
   updatePreview();
+  $('.color-patch').tooltip();
 });
 
 // Display messages on submission of output (clicking 'Tweet')
@@ -82,6 +83,18 @@ $(document).on("click", "#fontsizechooser a.dropdown-item", function() {
   // difficult to type for large font sizes.
 });
 
+// Functionality to choose different font colors.
+$(document).on("click", "#fontcolorchooser a.color-patch", function() {
+  // Update the selected color-patch.
+  selectedFontColor = $(this).data('font-color');
+  selectedFontColorName = $(this).data('font-color-name');
+  $("#fontcolorchooser a.color-patch.now-selected i.fa").css('color', selectedFontColor);
+  $("#fontcolorchooser .now-selected-name").text(selectedFontColorName);
+  // Set the selected color.
+  $("#preview").css('color', selectedFontColor);
+  $("#input").css('color', selectedFontColor);
+});
+
 </script>
 {% endblock %}
 
@@ -126,7 +139,39 @@ $(document).on("click", "#fontsizechooser a.dropdown-item", function() {
               {% endfor %}
             </div>
           </div>
-        </div>
+
+          {# font-color menu #}
+          <div class="dropdown" id="fontcolorchooser">
+            <button class="btn btn-secondary btn-sm dropdown-toggle"
+                type="button" id="fontcolorchooserlabel" data-toggle="dropdown"
+                aria-hasgroup="true" aria-expanded="false"><i
+                class="fa fa-paint-brush fa-fw"></i></button>
+            <div class="dropdown-menu" aria-labelledby="fontcolorchooserlabel">
+              <div class="container-fluid">
+                <a class="color-patch now-selected" href="javascript:void(0);"
+                    data-font-color-name="Default"
+                    data-font-color="#292b2c"><i
+                    class="fa fa-square fa-lg"
+                    style="color: #292b2c;"></i></a>
+                <small>
+                  <span class="text-muted now-selected-name">Default</span>
+                </small>
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="container-fluid">
+                {% for font_color_name, font_color in config['FONT_COLORS'].iteritems() %}
+                <a class="color-patch" href="javascript:void(0);"
+                    title="{{ font_color_name }}"
+                    data-font-color-name="{{ font_color_name }}"
+                    data-font-color="{{ font_color }}"
+                    data-toggle="tooltip" data-placement="bottom"><i
+                    class="fa fa-square fa-lg"
+                    style="color: {{ font_color }};"></i></a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>{# end menus #}
         <div class="col text-right">
           <button type="button" class="btn btn-primary btn-sm"
               onclick="updatePreview()"><i class="fa fa-eye">&nbsp;</i>

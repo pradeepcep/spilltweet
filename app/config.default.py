@@ -55,3 +55,12 @@ FONT_SIZES = {
     'Large': '24px',
     'Normal': '14px',
 }
+FONT_COLORS = {
+    # The 'Default' color is the default color of the site. It's required, and
+    # will be the default selection in the font-color-chooser.
+    'Default': '#292b2c',
+    'Black': '#000000',
+    'Red': '#cc0000',
+    'Blue': '#0000cc',
+    'Green': '#00cc00',
+}
