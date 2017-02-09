@@ -48,3 +48,10 @@ FONT_NAMES = {
     'Indie Flower': "'Indie Flower', cursive",
     'Bitter': "'Bitter', serif",
 }
+FONT_SIZES = {
+    # It's recommended that sizes be specified in pixels. This ensures
+    # consistent image sizes across all screen sizes/resolutions.
+    'Extra Large': '36px',
+    'Large': '24px',
+    'Normal': '14px',
+}

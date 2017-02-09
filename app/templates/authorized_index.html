@@ -70,6 +70,18 @@ $(document).on("click", "#fontchooser a.dropdown-item", function() {
   $("#input").css('font-family', selectedFont);
 });
 
+// Functionality to choose different font sizes.
+$(document).on("click", "#fontsizechooser a.dropdown-item", function() {
+  // Highlight the selected font size.
+  $("#fontsizechooser a.dropdown-item").removeClass('active');
+  $(this).addClass('active');
+  // Set the selected font size.
+  selectedFontSize = $(this).data('font-size');
+  $("#preview").css('font-size', selectedFontSize);
+  // We don't change the size of the input text here because then it would be
+  // difficult to type for large font sizes.
+});
+
 </script>
 {% endblock %}
 
@@ -94,6 +106,25 @@ $(document).on("click", "#fontchooser a.dropdown-item", function() {
                   style="font-family: {{ font_family|safe }};"
                   data-font="{{ font }}"
                   data-font-family="{{ font_family|safe }}">{{ font }}</a>
+              {% endfor %}
+            </div>
+          </div>
+
+          {# font-size menu #}
+          <div class="dropdown" id="fontsizechooser">
+            <button class="btn btn-secondary btn-sm dropdown-toggle"
+                type="button" id="fontsizechooserlabel" data-toggle="dropdown"
+                aria-hasgroup="true" aria-expanded="false">
+              Font size
+            </button>
+            <div class="dropdown-menu" aria-labelledby="fontsizechooserlabel">
+              {# List all fonts sizes available in the config #}
+              {% for font_size_name, font_size in config['FONT_SIZES'].iteritems() %}
+              <a class="dropdown-item{% if font_size_name == 'Normal'
+                  %} active{% endif %}" href="javascript:void(0);"
+                  style="font-size: {{ font_size }};"
+                  data-font-size-name="{{ font_size_name }}"
+                  data-font-size="{{ font_size }}">{{ font_size_name }}</a>
               {% endfor %}
             </div>
           </div>

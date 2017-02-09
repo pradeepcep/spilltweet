@@ -81,3 +81,8 @@ img.logo {
 #output-wrapper img#preview-img {
   border: 1px solid #dddddd;
 }
+
+/* Make dropdowns in the toolbar stay on the same line */
+.dropdown {
+  display: inline-block;
+}
