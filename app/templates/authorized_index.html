@@ -95,9 +95,8 @@ $(document).on("click", "#fontsizechooser a.dropdown-item", function() {
           <div class="dropdown" id="fontchooser">
             <button class="btn btn-secondary btn-sm dropdown-toggle"
                 type="button" id="fontchooserlabel" data-toggle="dropdown"
-                aria-hasgroup="true" aria-expanded="false">
-              Select font
-            </button>
+                aria-hasgroup="true" aria-expanded="false"><i
+                class="fa fa-font fa-fw"></i></button>
             <div class="dropdown-menu" aria-labelledby="fontchooserlabel">
               {# List all fonts available in the config #}
               {% for font, font_family in config['FONT_NAMES'].iteritems() %}
@@ -114,9 +113,8 @@ $(document).on("click", "#fontsizechooser a.dropdown-item", function() {
           <div class="dropdown" id="fontsizechooser">
             <button class="btn btn-secondary btn-sm dropdown-toggle"
                 type="button" id="fontsizechooserlabel" data-toggle="dropdown"
-                aria-hasgroup="true" aria-expanded="false">
-              Font size
-            </button>
+                aria-hasgroup="true" aria-expanded="false"><i
+                class="fa fa-text-height fa-fw"></i></button>
             <div class="dropdown-menu" aria-labelledby="fontsizechooserlabel">
               {# List all fonts sizes available in the config #}
               {% for font_size_name, font_size in config['FONT_SIZES'].iteritems() %}
@@ -131,7 +129,8 @@ $(document).on("click", "#fontsizechooser a.dropdown-item", function() {
         </div>
         <div class="col text-right">
           <button type="button" class="btn btn-primary btn-sm"
-              onclick="updatePreview()">Preview</button>
+              onclick="updatePreview()"><i class="fa fa-eye">&nbsp;</i>
+              Preview</button>
         </div>
       </div>
       <textarea id="input" placeholder="Enter your text here..."></textarea>
@@ -142,7 +141,8 @@ $(document).on("click", "#fontsizechooser a.dropdown-item", function() {
           <form method="post" action="{{ url_for('postimage') }}"
               id="tweet-form">
             <input type="hidden" id="imagedata" name="imagedata" value="" />
-            <button type="submit" class="btn btn-primary btn-sm">Tweet</button>
+            <button type="submit" class="btn btn-primary btn-sm"><i
+                class="fa fa-twitter">&nbsp;</i>Tweet</button>
           </form>
         </div>
       </div>
