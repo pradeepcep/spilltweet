@@ -38,4 +38,13 @@ HTML2CANVAS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/' + \
     '0.4.1/html2canvas.min.js'
 HTML2CANVAS_SUM = 'sha256-c3RzsUWg+y2XljunEQS0LqWdQ04X1D3j22fd/8JCAKw='
 
-FONT_URL = 'https://fonts.googleapis.com/css?family=Source+Sans+Pro'
+FONT_URL = 'https://fonts.googleapis.com/css?family=Bitter|Indie+Flower|' + \
+    'Satisfy|Source+Sans+Pro'
+FONT_NAMES = {
+    # Always use single quotes for font names. Eg. 'Source Sans Pro'. Using
+    # double quotes here will break the template.
+    'Source Sans Pro': "'Source Sans Pro', sans-serif",
+    'Satisfy': "'Satisfy', cursive",
+    'Indie Flower': "'Indie Flower', cursive",
+    'Bitter': "'Bitter', serif",
+}

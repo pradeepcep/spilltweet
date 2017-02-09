@@ -31,6 +31,7 @@ $(document).ready(function() {
   updatePreview();
 });
 
+// Display messages on submission of output (clicking 'Tweet')
 $(document).on("submit", "#tweet-form", function(event) {
   if ($("#output-wrapper").has("img").length > 0) {
     if ($("#output-wrapper > img").attr("src")) {
@@ -57,6 +58,18 @@ $(document).on("submit", "#tweet-form", function(event) {
     return false;
   }
 });
+
+// Custom fonts functionality.
+$(document).on("click", "#fontchooser a.dropdown-item", function() {
+  // Highlight the selected font.
+  $("#fontchooser a.dropdown-item").removeClass('active');
+  $(this).addClass('active');
+  // Set the selected font.
+  selectedFont = $(this).data('font-family');
+  $("#preview").css('font-family', selectedFont);
+  $("#input").css('font-family', selectedFont);
+});
+
 </script>
 {% endblock %}
 
@@ -65,6 +78,26 @@ $(document).on("submit", "#tweet-form", function(event) {
   <div class="row">
     <div class="col">
       <div class="row">
+        <div class="col-9">
+          {# fonts menu #}
+          <div class="dropdown" id="fontchooser">
+            <button class="btn btn-secondary btn-sm dropdown-toggle"
+                type="button" id="fontchooserlabel" data-toggle="dropdown"
+                aria-hasgroup="true" aria-expanded="false">
+              Select font
+            </button>
+            <div class="dropdown-menu" aria-labelledby="fontchooserlabel">
+              {# List all fonts available in the config #}
+              {% for font, font_family in config['FONT_NAMES'].iteritems() %}
+              <a class="dropdown-item{% if font == 'Source Sans Pro'
+                  %} active{% endif %}" href="javascript:void(0);"
+                  style="font-family: {{ font_family|safe }};"
+                  data-font="{{ font }}"
+                  data-font-family="{{ font_family|safe }}">{{ font }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
         <div class="col text-right">
           <button type="button" class="btn btn-primary btn-sm"
               onclick="updatePreview()">Preview</button>

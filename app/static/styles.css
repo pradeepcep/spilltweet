@@ -43,6 +43,7 @@ img.logo {
   border: 0.1em solid #efefef;
   margin-top: 0.5em;
   min-height: 20em;
+  font-family: 'Source Sans Pro', sans-serif; /* match output font */
 }
 
 #preview-wrapper {
