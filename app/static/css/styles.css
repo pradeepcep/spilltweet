@@ -8,17 +8,6 @@ html, body {
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  /* Hide the scrollbars because they always display due to the large
-   * (invisible, but still present) preview-wrapper div.
-   * Use a body-wrapper div and get scrollbars on it instead. */
-  overflow: hidden;
-}
-
-#body-wrapper {
-  height: 100%;
-  overflow: auto;
-  margin: 0;
-  padding: 0;
 }
 
 .navbar .nav-item .tw-signin-img {
@@ -47,27 +36,14 @@ img.logo {
 }
 
 #preview-wrapper {
-  display: inline-block;
   visibility: hidden;
-  background-color: #ffffff;
   position: absolute; /* so that it doesn't mess with the layout. */
   top: 0;
   left: 0;
-  height: 9000px;
-  width: 9000px;
+  height: 0;
+  width: 0;
   z-index: -99999;
-}
-
-#preview {
-  display: inline-block;
-  background-color: #ffffff;
-  z-index: -99999;
-  /* Make image size independant of screen resolution by explicitly specifying
-   * the sizes in pixels. */
-  padding: 20px;
-  font-size: 16px;
-  max-width: 600px; /* conservative maximum sizes for now */
-  max-height: 600px;
+  display: none;
 }
 
 #output-wrapper {
