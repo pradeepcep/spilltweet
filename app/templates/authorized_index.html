@@ -204,4 +204,11 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
 <div id="preview-wrapper">
   <div id="preview"></div>
 </div>
+{# Trigger pre-loading the fonts so that they appear without a delay
+  in the menu #}
+<div style="visibility: hidden; position: absolute; top: 0; left: 0; z-index: -9998">
+  {% for font, font_family in config['FONT_NAMES'].iteritems() %}
+  <span style="font-family: {{ font_family }};">{{ font }}</span>
+  {% endfor %}
+</div>
 {% endblock %}
