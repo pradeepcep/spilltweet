@@ -15,8 +15,9 @@ function updatePreview() {
         <i>To see the output, enter text and hit <b>Preview</b>.</i></span>');
   }
   else {
-    $("#preview").html($("#input").val().replace(/\n/g, '<br />'));
-    html2canvas($("#preview"), {
+    $("#preview-wrapper").contents().find("#preview").html(
+        $("#input").val().replace(/\n/g, '<br />'));
+    html2canvas($("#preview", window.previewContext), {
       onrendered: function(canvas) {
         canvas.id="output";
         $("#output-wrapper").empty().append('<img src="' +
@@ -28,6 +29,34 @@ function updatePreview() {
 }
 
 $(document).ready(function() {
+  {# The iframe portion shamelessly copied from StackOverflow :P #}
+  window.previewContext = $("iframe")[0].contentWindow.document;
+  $("head", window.previewContext).html(
+      '<link rel="stylesheet" href="{{ config['FONT_URL'] }}" />\
+      <link rel="stylesheet" type="text/css"\
+          href="{{ config['BOOTSTRAP_CSS_URL'] }}"\
+          integrity="{{ config['BOOTSTRAP_CSS_SUM'] }}"\
+          crossorigin="anonymous" />');
+  $("head", window.previewContext).append('\
+      <style>\
+      html, body { padding: 0; margin: 0; }\
+      body { position: fixed; top: 0; left: 0;\
+        width: 6000px; height: 6000px; }\
+      #preview {\
+        margin: 0;\
+        font-family: "Source Sans Pro", sans-serif;\
+        /* Make image size independant of screen resolution by explicitly\
+        specifying the sizes in pixels. */\
+        font-size: 14px;\
+        padding: 20px;\
+        max-width: 600px;\
+        max-height: 600px;\
+        background-color: #ffffff;\
+        display: inline-block;\
+      }\
+      </style>\
+      ');
+      $("body", window.previewContext).html('<div id="preview"></div>');
   updatePreview();
   $('.color-patch').tooltip();
 });
@@ -67,7 +96,7 @@ $(document).on("click", "#fontchooser a.dropdown-item", function() {
   $(this).addClass('active');
   // Set the selected font.
   selectedFont = $(this).data('font-family');
-  $("#preview").css('font-family', selectedFont);
+  $("#preview", window.previewContext).css('font-family', selectedFont);
   $("#input").css('font-family', selectedFont);
 });
 
@@ -78,7 +107,7 @@ $(document).on("click", "#fontsizechooser a.dropdown-item", function() {
   $(this).addClass('active');
   // Set the selected font size.
   selectedFontSize = $(this).data('font-size');
-  $("#preview").css('font-size', selectedFontSize);
+  $("#preview", window.previewContext).css('font-size', selectedFontSize);
   // We don't change the size of the input text here because then it would be
   // difficult to type for large font sizes.
 });
@@ -91,7 +120,7 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
   $("#fontcolorchooser a.color-patch.now-selected i.fa").css('color', selectedFontColor);
   $("#fontcolorchooser .now-selected-name").text(selectedFontColorName);
   // Set the selected color.
-  $("#preview").css('color', selectedFontColor);
+  $("#preview", window.previewContext).css('color', selectedFontColor);
   $("#input").css('color', selectedFontColor);
 });
 
@@ -201,9 +230,7 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
 {% endblock %}
 
 {% block closingcontent %}
-<div id="preview-wrapper">
-  <div id="preview"></div>
-</div>
+<iframe id="preview-wrapper" src="" frameborder="0"></iframe>
 {# Trigger pre-loading the fonts so that they appear without a delay
   in the menu #}
 <div style="visibility: hidden; position: absolute; top: 0; left: 0; z-index: -9998">
