@@ -64,3 +64,12 @@ FONT_COLORS = {
     'Blue': '#0000cc',
     'Green': '#00cc00',
 }
+BG_COLORS = {
+    # The 'Default' color is the default background color. It's required, and
+    # will be the default selection in the bg-color-chooser.
+    'Default': '#ffffff',
+    'Black': '#000000',
+    'Red': '#cc0000',
+    'Blue': '#0000cc',
+    'Green': '#00cc00',
+}

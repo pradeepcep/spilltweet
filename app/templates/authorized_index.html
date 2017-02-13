@@ -124,6 +124,18 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
   $("#input").css('color', selectedFontColor);
 });
 
+// Functionality to choose different background colors.
+$(document).on("click", "#bgcolorchooser a.color-patch", function() {
+  // Update the selected color-patch.
+  selectedBgColor = $(this).data('bg-color');
+  selectedBgColorName = $(this).data('bg-color-name');
+  $("#bgcolorchooser a.color-patch.now-selected i.fa").css('color', selectedBgColor);
+  $("#bgcolorchooser .now-selected-name").text(selectedBgColorName);
+  // Set the selected color.
+  $("#preview", window.previewContext).css('background-color', selectedBgColor);
+  $("#input").css('background-color', selectedBgColor);
+});
+
 </script>
 {% endblock %}
 
@@ -196,6 +208,38 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
                     data-toggle="tooltip" data-placement="bottom"><i
                     class="fa fa-square fa-lg"
                     style="color: {{ font_color }};"></i></a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          {# background-color menu #}
+          <div class="dropdown" id="bgcolorchooser">
+            <button class="btn btn-secondary btn-sm dropdown-toggle"
+                type="button" id="bgcolorchooserlabel" data-toggle="dropdown"
+                aria-hasgroup="true" aria-expanded="false"><i
+                class="fa fa-square fa-fw"></i></button>
+            <div class="dropdown-menu" aria-labelledby="bgcolorchooserlabel">
+              <div class="container-fluid">
+                <a class="color-patch now-selected" href="javascript:void(0);"
+                    data-bg-color-name="Default"
+                    data-bg-color="#ffffff"><i
+                    class="fa fa-square fa-lg"
+                    style="color: #ffffff;"></i></a>
+                <small>
+                  <span class="text-muted now-selected-name">Default</span>
+                </small>
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="container-fluid">
+                {% for bg_color_name, bg_color in config['BG_COLORS'].iteritems() %}
+                <a class="color-patch" href="javascript:void(0);"
+                    title="{{ bg_color_name }}"
+                    data-bg-color-name="{{ bg_color_name }}"
+                    data-bg-color="{{ bg_color }}"
+                    data-toggle="tooltip" data-placement="bottom"><i
+                    class="fa fa-square fa-lg"
+                    style="color: {{ bg_color }};"></i></a>
                 {% endfor %}
               </div>
             </div>
