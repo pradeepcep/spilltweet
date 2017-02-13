@@ -46,12 +46,16 @@ img.logo {
   display: none;
 }
 
-#output-wrapper {
+#output-container {
   padding: 1em;
   border: none;
   border-top: 0.1em solid #efefef;
   margin-top: 0.5em;
   min-height: 20em;
+}
+
+#output-wrapper {
+  overflow: auto;
 }
 
 #output-wrapper img#preview-img {

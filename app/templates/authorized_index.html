@@ -130,7 +130,7 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
 {% block content %}
 <div class="container-fluid pt-2">
   <div class="row">
-    <div class="col">
+    <div class="col-md-6 col-sm-12 col-input">
       <div class="row">
         <div class="col-9">
           {# fonts menu #}
@@ -201,7 +201,7 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
             </div>
           </div>
         </div>{# end menus #}
-        <div class="col text-right">
+        <div class="col-3 text-right">
           <button type="button" class="btn btn-primary btn-sm"
               onclick="updatePreview()"><i class="fa fa-eye">&nbsp;</i>
               Preview</button>
@@ -209,7 +209,7 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
       </div>
       <textarea id="input" placeholder="Enter your text here..."></textarea>
     </div>
-    <div class="col">
+    <div class="col-md-6 col-sm-12 col-output">
       <div class="row">
         <div class="col text-right">
           <form method="post" action="{{ url_for('postimage') }}"
@@ -220,8 +220,10 @@ $(document).on("click", "#fontcolorchooser a.color-patch", function() {
           </form>
         </div>
       </div>
-      <div id="output-wrapper"
-          class="d-flex justify-content-center align-items-center bg-faded">
+      <div id="output-container"
+          class="d-flex justify-content-center align-items-center bg-faded" >
+        <div id="output-wrapper">
+        </div>
       </div>
     </div>
   </div>
