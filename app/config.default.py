@@ -38,6 +38,9 @@ HTML2CANVAS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/' + \
     '0.4.1/html2canvas.min.js'
 HTML2CANVAS_SUM = 'sha256-c3RzsUWg+y2XljunEQS0LqWdQ04X1D3j22fd/8JCAKw='
 
+QUILLJS_URL = '//cdn.quilljs.com/1.2.0/quill.min.js'
+QUILLJS_THEME_URL = '//cdn.quilljs.com/1.2.0/quill.snow.css'
+
 FONT_URL = 'https://fonts.googleapis.com/css?family=Bitter|Indie+Flower|' + \
     'Satisfy|Source+Sans+Pro'
 FONT_NAMES = {

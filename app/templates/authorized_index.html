@@ -7,16 +7,47 @@
     integrity="{{ config['HTML2CANVAS_SUM'] }}"
     crossorigin="anonymous"></script>
 
+<script type="text/javascript" src="{{ config['QUILLJS_URL'] }}"></script>
+<link rel="stylesheet" href="{{ config['QUILLJS_THEME_URL'] }}" />
+
 <script type="text/javascript">
+// Function to initialize the Quill.js rich text editor and store it in the
+// window object.
+function initializeQuill() {
+  var toolbarOptions = [
+    [{ 'font': [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'header': 1 }, { 'header': 2 }],
+    [{ 'align': [] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }],
+    ['blockquote', 'code-block'],
+    [{ 'script': 'sub'}, { 'script': 'super' }],
+    ['clean']
+  ];
+
+  var options = {
+    modules: {
+      toolbar: toolbarOptions,
+    },
+    placeholder: 'Enter your text here...',
+    theme: 'snow'
+  };
+
+  window.quill = new Quill('#input', options);
+}
+
 function updatePreview() {
   // Display a message on the output when input is empty.
-  if (!$("#input").val()) {
+  if (!window.quill.getText().trim().length) {
     $("#output-wrapper").empty().html('<span class="text-muted">\
         <i>To see the output, enter text and hit <b>Preview</b>.</i></span>');
   }
   else {
     $("#preview-wrapper").contents().find("#preview").html(
-        $("#input").val().replace(/\n/g, '<br />'));
+        document.querySelector(".ql-editor").innerHTML);
     html2canvas($("#preview", window.previewContext), {
       onrendered: function(canvas) {
         canvas.id="output";
@@ -29,14 +60,14 @@ function updatePreview() {
 }
 
 $(document).ready(function() {
-  {# The iframe portion shamelessly copied from StackOverflow :P #}
   window.previewContext = $("iframe")[0].contentWindow.document;
-  $("head", window.previewContext).html(
-      '<link rel="stylesheet" href="{{ config['FONT_URL'] }}" />\
+  $("head", window.previewContext).html('\
+      <link rel="stylesheet" href="{{ config['QUILLJS_THEME_URL'] }}" />\
       <link rel="stylesheet" type="text/css"\
           href="{{ config['BOOTSTRAP_CSS_URL'] }}"\
           integrity="{{ config['BOOTSTRAP_CSS_SUM'] }}"\
-          crossorigin="anonymous" />');
+          crossorigin="anonymous" />\
+      ');
   $("head", window.previewContext).append('\
       <style>\
       html, body { padding: 0; margin: 0; }\
@@ -47,18 +78,20 @@ $(document).ready(function() {
         font-family: "Source Sans Pro", sans-serif;\
         /* Make image size independant of screen resolution by explicitly\
         specifying the sizes in pixels. */\
-        font-size: 14px;\
-        padding: 20px;\
+        padding: 20px !important;\
         max-width: 600px;\
         max-height: 600px;\
         background-color: #ffffff;\
         display: inline-block;\
+        height: auto !important;\
+        overflow: visible !important;\
       }\
       </style>\
       ');
-      $("body", window.previewContext).html('<div id="preview"></div>');
+  $("body", window.previewContext).html('<div class="ql-container ql-snow">\
+      <div id="preview" class="ql-editor"></div></div>');
+  initializeQuill();
   updatePreview();
-  $('.color-patch').tooltip();
 });
 
 // Display messages on submission of output (clicking 'Tweet')
@@ -88,54 +121,6 @@ $(document).on("submit", "#tweet-form", function(event) {
     return false;
   }
 });
-
-// Custom fonts functionality.
-$(document).on("click", "#fontchooser a.dropdown-item", function() {
-  // Highlight the selected font.
-  $("#fontchooser a.dropdown-item").removeClass('active');
-  $(this).addClass('active');
-  // Set the selected font.
-  selectedFont = $(this).data('font-family');
-  $("#preview", window.previewContext).css('font-family', selectedFont);
-  $("#input").css('font-family', selectedFont);
-});
-
-// Functionality to choose different font sizes.
-$(document).on("click", "#fontsizechooser a.dropdown-item", function() {
-  // Highlight the selected font size.
-  $("#fontsizechooser a.dropdown-item").removeClass('active');
-  $(this).addClass('active');
-  // Set the selected font size.
-  selectedFontSize = $(this).data('font-size');
-  $("#preview", window.previewContext).css('font-size', selectedFontSize);
-  // We don't change the size of the input text here because then it would be
-  // difficult to type for large font sizes.
-});
-
-// Functionality to choose different font colors.
-$(document).on("click", "#fontcolorchooser a.color-patch", function() {
-  // Update the selected color-patch.
-  selectedFontColor = $(this).data('font-color');
-  selectedFontColorName = $(this).data('font-color-name');
-  $("#fontcolorchooser a.color-patch.now-selected i.fa").css('color', selectedFontColor);
-  $("#fontcolorchooser .now-selected-name").text(selectedFontColorName);
-  // Set the selected color.
-  $("#preview", window.previewContext).css('color', selectedFontColor);
-  $("#input").css('color', selectedFontColor);
-});
-
-// Functionality to choose different background colors.
-$(document).on("click", "#bgcolorchooser a.color-patch", function() {
-  // Update the selected color-patch.
-  selectedBgColor = $(this).data('bg-color');
-  selectedBgColorName = $(this).data('bg-color-name');
-  $("#bgcolorchooser a.color-patch.now-selected i.fa").css('color', selectedBgColor);
-  $("#bgcolorchooser .now-selected-name").text(selectedBgColorName);
-  // Set the selected color.
-  $("#preview", window.previewContext).css('background-color', selectedBgColor);
-  $("#input").css('background-color', selectedBgColor);
-});
-
 </script>
 {% endblock %}
 
@@ -144,114 +129,14 @@ $(document).on("click", "#bgcolorchooser a.color-patch", function() {
   <div class="row">
     <div class="col-md-6 col-sm-12 col-input">
       <div class="row">
-        <div class="col-9">
-          {# fonts menu #}
-          <div class="dropdown" id="fontchooser">
-            <button class="btn btn-secondary btn-sm dropdown-toggle"
-                type="button" id="fontchooserlabel" data-toggle="dropdown"
-                aria-hasgroup="true" aria-expanded="false"><i
-                class="fa fa-font fa-fw"></i></button>
-            <div class="dropdown-menu" aria-labelledby="fontchooserlabel">
-              {# List all fonts available in the config #}
-              {% for font, font_family in config['FONT_NAMES'].iteritems() %}
-              <a class="dropdown-item{% if font == 'Source Sans Pro'
-                  %} active{% endif %}" href="javascript:void(0);"
-                  style="font-family: {{ font_family|safe }};"
-                  data-font="{{ font }}"
-                  data-font-family="{{ font_family|safe }}">{{ font }}</a>
-              {% endfor %}
-            </div>
-          </div>
-
-          {# font-size menu #}
-          <div class="dropdown" id="fontsizechooser">
-            <button class="btn btn-secondary btn-sm dropdown-toggle"
-                type="button" id="fontsizechooserlabel" data-toggle="dropdown"
-                aria-hasgroup="true" aria-expanded="false"><i
-                class="fa fa-text-height fa-fw"></i></button>
-            <div class="dropdown-menu" aria-labelledby="fontsizechooserlabel">
-              {# List all fonts sizes available in the config #}
-              {% for font_size_name, font_size in config['FONT_SIZES'].iteritems() %}
-              <a class="dropdown-item{% if font_size_name == 'Normal'
-                  %} active{% endif %}" href="javascript:void(0);"
-                  style="font-size: {{ font_size }};"
-                  data-font-size-name="{{ font_size_name }}"
-                  data-font-size="{{ font_size }}">{{ font_size_name }}</a>
-              {% endfor %}
-            </div>
-          </div>
-
-          {# font-color menu #}
-          <div class="dropdown" id="fontcolorchooser">
-            <button class="btn btn-secondary btn-sm dropdown-toggle"
-                type="button" id="fontcolorchooserlabel" data-toggle="dropdown"
-                aria-hasgroup="true" aria-expanded="false"><i
-                class="fa fa-paint-brush fa-fw"></i></button>
-            <div class="dropdown-menu" aria-labelledby="fontcolorchooserlabel">
-              <div class="container-fluid">
-                <a class="color-patch now-selected" href="javascript:void(0);"
-                    data-font-color-name="Default"
-                    data-font-color="#292b2c"><i
-                    class="fa fa-square fa-lg"
-                    style="color: #292b2c;"></i></a>
-                <small>
-                  <span class="text-muted now-selected-name">Default</span>
-                </small>
-              </div>
-              <div class="dropdown-divider"></div>
-              <div class="container-fluid">
-                {% for font_color_name, font_color in config['FONT_COLORS'].iteritems() %}
-                <a class="color-patch" href="javascript:void(0);"
-                    title="{{ font_color_name }}"
-                    data-font-color-name="{{ font_color_name }}"
-                    data-font-color="{{ font_color }}"
-                    data-toggle="tooltip" data-placement="bottom"><i
-                    class="fa fa-square fa-lg"
-                    style="color: {{ font_color }};"></i></a>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-
-          {# background-color menu #}
-          <div class="dropdown" id="bgcolorchooser">
-            <button class="btn btn-secondary btn-sm dropdown-toggle"
-                type="button" id="bgcolorchooserlabel" data-toggle="dropdown"
-                aria-hasgroup="true" aria-expanded="false"><i
-                class="fa fa-square fa-fw"></i></button>
-            <div class="dropdown-menu" aria-labelledby="bgcolorchooserlabel">
-              <div class="container-fluid">
-                <a class="color-patch now-selected" href="javascript:void(0);"
-                    data-bg-color-name="Default"
-                    data-bg-color="#ffffff"><i
-                    class="fa fa-square fa-lg"
-                    style="color: #ffffff;"></i></a>
-                <small>
-                  <span class="text-muted now-selected-name">Default</span>
-                </small>
-              </div>
-              <div class="dropdown-divider"></div>
-              <div class="container-fluid">
-                {% for bg_color_name, bg_color in config['BG_COLORS'].iteritems() %}
-                <a class="color-patch" href="javascript:void(0);"
-                    title="{{ bg_color_name }}"
-                    data-bg-color-name="{{ bg_color_name }}"
-                    data-bg-color="{{ bg_color }}"
-                    data-toggle="tooltip" data-placement="bottom"><i
-                    class="fa fa-square fa-lg"
-                    style="color: {{ bg_color }};"></i></a>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-        </div>{# end menus #}
-        <div class="col-3 text-right">
+        <div class="col text-right">
           <button type="button" class="btn btn-primary btn-sm"
               onclick="updatePreview()"><i class="fa fa-eye">&nbsp;</i>
               Preview</button>
         </div>
       </div>
-      <textarea id="input" placeholder="Enter your text here..."></textarea>
+      <div id="toolbar"></div>
+      <div id="input"></div>
     </div>
     <div class="col-md-6 col-sm-12 col-output">
       <div class="row">
