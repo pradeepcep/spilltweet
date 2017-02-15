@@ -40,6 +40,10 @@ img.logo {
   margin: 0 !important;
 }
 
+#preview-button:hover {
+  cursor: pointer;
+}
+
 #preview-wrapper {
   visibility: hidden;
   position: absolute; /* so that it doesn't mess with the layout. */
