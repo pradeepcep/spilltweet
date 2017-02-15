@@ -35,6 +35,11 @@ img.logo {
   font-family: 'Source Sans Pro', sans-serif; /* match output font */
 }
 
+/* Address some quirks in the rich text editor */
+#input blockquote {
+  margin: 0 !important;
+}
+
 #preview-wrapper {
   visibility: hidden;
   position: absolute; /* so that it doesn't mess with the layout. */
