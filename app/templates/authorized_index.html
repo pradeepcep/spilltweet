@@ -36,6 +36,12 @@ function initializeQuill() {
   };
 
   window.quill = new Quill('#input', options);
+
+  // Inject the 'Preview' button into the toolbar.
+  $('#input-wrapper .ql-toolbar').append('\
+  <span id="preview-button" class="ql-formats btn btn-sm btn-primary">\
+  <i class="fa fa-eye fa-1x">&nbsp;</i>Preview</span>\
+  ');
 }
 
 function updatePreview() {
@@ -96,6 +102,9 @@ $(document).ready(function() {
   updatePreview();
 });
 
+// Preview button functionality.
+$(document).on("click", "#preview-button", updatePreview);
+
 // Display messages on submission of output (clicking 'Tweet')
 $(document).on("submit", "#tweet-form", function(event) {
   if ($("#output-wrapper").has("img").length > 0) {
@@ -130,15 +139,9 @@ $(document).on("submit", "#tweet-form", function(event) {
 <div class="container-fluid pt-2">
   <div class="row">
     <div class="col-md-6 col-sm-12 col-input">
-      <div class="row">
-        <div class="col text-right">
-          <button type="button" class="btn btn-primary btn-sm"
-              onclick="updatePreview()"><i class="fa fa-eye">&nbsp;</i>
-              Preview</button>
-        </div>
-      </div>
-      <div id="toolbar"></div>
+    <div id="input-wrapper">
       <div id="input"></div>
+    </div>
     </div>
     <div class="col-md-6 col-sm-12 col-output">
       <div class="row">
