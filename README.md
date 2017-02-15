@@ -9,6 +9,12 @@ Spilltweet is a neat little tool that lets you post large tweets ( > 140 charact
 
 -
 
+### How it works
+
+Spilltweet renders the resulting markup of your text in a hidden `iframe`. This markup is then converted to a `canvas` object, from which we get the image. The image is then sent to the server, which posts it on Twitter.
+
+-
+
 ### Getting Spilltweet
 
 Clone this repository using `git`:
@@ -50,7 +56,7 @@ Open `config.py` in your favorite text editor. There are three variables which y
    
    After you have created a Twitter app, navigate to it's *Keys and Access Tokens* section. Copy the value against the _Consumer Key (API Key)_ field. This is your `TWITTER_KEY`.
 
- - **`TWITTER_SECRET`:**
+ - **`TWITTER_SECRET`:**  
    On the same page, copy the value against the *Consumer Secret (API Secret)* field. This is your `TWITTER_SECRET`.
 
 Save `config.py` and exit.
@@ -82,3 +88,15 @@ If you don't want to flood your Twitter timeline while testing, you can set the 
 Spilltweet is a hobby project. You are welcome to use Spilltweet, copy it, tinker with it and distribute it. You may use it for commercial purposes, but you may not sell / charge for Spilltweet or the service / functionality it provides.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Attribution-ShareAlike 4.0 International License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
+
+-
+
+### Credits
+
+Spilltweet relies on [HTML2Canvas](https://github.com/niklasvh/html2canvas) and [Quill.js](https://github.com/quilljs/quill), and is thankful to their developers.
+
+-
+
+All copyrights and trademarks belong to their respective owners.
+
+Spilltweet is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. in no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
