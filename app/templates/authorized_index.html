@@ -62,6 +62,9 @@ function updatePreview() {
       }
     });
   }
+
+  $('#preview-display').css('display', 'block');
+  $('#input-display').css('display', 'none');
 }
 
 $(document).ready(function() {
@@ -99,11 +102,16 @@ $(document).ready(function() {
   $("body", window.previewContext).html('<div class="ql-container ql-snow">\
       <div id="preview" class="ql-editor"></div></div>');
   initializeQuill();
-  updatePreview();
 });
 
 // Preview button functionality.
 $(document).on("click", "#preview-button", updatePreview);
+
+// Functionality for Edit button in preview mode.
+$(document).on("click", "#edit-again", function() {
+  $('#preview-display').css('display', 'none');
+  $('#input-display').css('display', 'block');
+});
 
 // Display messages on submission of output (clicking 'Tweet')
 $(document).on("submit", "#tweet-form", function(event) {
@@ -136,27 +144,34 @@ $(document).on("submit", "#tweet-form", function(event) {
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid pt-2">
+<div class="container-fluid pt-2" id="input-display">
+  <div id="input-wrapper">
+    <div id="input"></div>
+  </div>
+</div>
+<div class="container-fluid pt-2" id="preview-display">
   <div class="row">
-    <div class="col-md-6 col-sm-12 col-input">
-    <div id="input-wrapper">
-      <div id="input"></div>
+    <div class="col-4">
+      <button type="button" class="btn btn-danger btn-sm"
+          id="edit-again"><i class="fa fa-pencil">&nbsp;</i>Edit</button>
     </div>
+    <div class="col-4 text-center">Preview
     </div>
-    <div class="col-md-6 col-sm-12 col-output">
-      <div class="row">
-        <div class="col text-right">
-          <form method="post" action="{{ url_for('postimage') }}"
-              id="tweet-form">
-            <input type="hidden" id="imagedata" name="imagedata" value="" />
-            <button type="submit" class="btn btn-primary btn-sm"><i
-                class="fa fa-twitter">&nbsp;</i>Tweet</button>
-          </form>
-        </div>
-      </div>
+    <div class="col-4 text-right">
+      <form method="post" action="{{ url_for('postimage') }}"
+          id="tweet-form">
+        <input type="hidden" id="imagedata" name="imagedata" value="" />
+        <button type="submit" class="btn btn-primary btn-sm"><i
+            class="fa fa-twitter">&nbsp;</i>Tweet</button>
+      </form>
+    </div>
+    <div class="col-12">
       <div id="output-container"
           class="d-flex justify-content-center align-items-center bg-faded" >
         <div id="output-wrapper">
+          <span class="text-muted">
+            <i>To see the output, enter text and hit <b>Preview</b>.</i>
+          </span>
         </div>
       </div>
     </div>
