@@ -1,4 +1,5 @@
 {% extends "skeleton.html" %}
+{% from "editor_toolbar.html" import editor_toolbar %}
 
 {# Include the HTML2Canvas library only after authentication #}
 {% block scripts %}
@@ -14,34 +15,15 @@
 // Function to initialize the Quill.js rich text editor and store it in the
 // window object.
 function initializeQuill() {
-  var toolbarOptions = [
-    [{ 'font': [] }],
-    [{ 'size': ['small', false, 'large', 'huge'] }],
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    [{ 'header': 1 }, { 'header': 2 }],
-    [{ 'align': [] }, { 'color': [] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],
-    ['blockquote', 'code-block'],
-    [{ 'script': 'sub'}, { 'script': 'super' }],
-    ['clean']
-  ];
-
   var options = {
     modules: {
-      toolbar: toolbarOptions,
+      toolbar: '#toolbar',
     },
     placeholder: 'Enter your text here...',
     theme: 'snow'
   };
 
   window.quill = new Quill('#input', options);
-
-  // Inject the 'Preview' button into the toolbar.
-  $('#input-wrapper .ql-toolbar').append('\
-  <span id="preview-button" class="ql-formats btn btn-sm btn-primary">\
-  <i class="fa fa-eye fa-1x">&nbsp;</i>Preview</span>\
-  ');
 }
 
 function updatePreview() {
@@ -146,6 +128,7 @@ $(document).on("submit", "#tweet-form", function(event) {
 {% block content %}
 <div class="container-fluid pt-2" id="input-display">
   <div id="input-wrapper">
+    <div id="toolbar">{{ editor_toolbar() }}</div>
     <div id="input"></div>
   </div>
 </div>
