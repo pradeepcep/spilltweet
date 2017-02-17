@@ -23,6 +23,17 @@ function initializeQuill() {
     theme: 'snow'
   };
 
+  // Add custom fonts to the whitelist.
+  var Font = Quill.import('formats/font');
+  Font.whitelist = [
+    {% for font, font_family in config['FONT_NAMES'].iteritems() %}
+    '{{ font.split(" ")|join('-')|lower }}',
+    {% endfor %}
+  ];
+  // Add the default fonts as well.
+  Font.whitelist.push('serif', 'monospace');
+  Quill.register(Font, true);
+
   window.quill = new Quill('#input', options);
 }
 
@@ -58,14 +69,13 @@ $(document).ready(function() {
           integrity="{{ config['BOOTSTRAP_CSS_SUM'] }}"\
           crossorigin="anonymous" />\
       ');
-  $("head", window.previewContext).append('\
+  $("head", window.previewContext).append("\
       <style>\
       html, body { padding: 0; margin: 0; }\
       body { position: fixed; top: 0; left: 0;\
         width: 6000px; height: 6000px; }\
       #preview {\
         margin: 0;\
-        font-family: "Source Sans Pro", sans-serif;\
         /* Make image size independant of screen resolution by explicitly\
         specifying the sizes in pixels. */\
         padding: 20px !important;\
@@ -79,8 +89,14 @@ $(document).ready(function() {
       #preview blockquote {\
         margin: 0;\
       }\
+      {# Add custom fonts to the preview #}\
+      {% for font, font_family in config['FONT_NAMES'].iteritems() %}\
+      .ql-font-{{ font.split(' ')|join('-')|lower }} {\
+        font-family: {{ font_family|safe }};\
+      }\
+      {% endfor %}\
       </style>\
-      ');
+      ");
   $("body", window.previewContext).html('<div class="ql-container ql-snow">\
       <div id="preview" class="ql-editor"></div></div>');
   initializeQuill();
@@ -123,6 +139,22 @@ $(document).on("submit", "#tweet-form", function(event) {
   }
 });
 </script>
+
+<style>
+{# Add custom fonts #}
+{# For the toolbar #}
+{% for font, font_family in config['FONT_NAMES'].iteritems() %}
+#toolbar .ql-font span[data-label="{{ font }}"]::before {
+  font-family: {{ font_family|safe }};
+}
+{# For the content #}
+.ql-font-{{ font.split(" ")|join('-')|lower }} {
+  font-family: {{ font_family|safe }};
+}
+{% endfor %}
+
+</style>
+
 {% endblock %}
 
 {% block content %}

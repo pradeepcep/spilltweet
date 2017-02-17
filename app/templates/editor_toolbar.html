@@ -6,6 +6,10 @@
     <option selected="selected"></option>
     <option value="serif"></option>
     <option value="monospace"></option>
+    {# Add custom fonts #}
+    {% for font, font_family in config['FONT_NAMES'].iteritems() %}
+    <option value="{{ font.split(" ")|join('-')|lower }}">{{ font }}</option>
+    {% endfor %}
   </select>
 </span>
 

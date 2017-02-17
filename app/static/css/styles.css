@@ -36,6 +36,10 @@ img.logo {
 }
 
 /* Address some quirks in the rich text editor */
+#toolbar .ql-font {
+  width: 120px;
+}
+
 #input blockquote {
   margin: 0 !important;
 }
