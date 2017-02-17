@@ -28,7 +28,7 @@ function initializeQuill() {
 
 function updatePreview() {
   // Display a message on the output when input is empty.
-  if (!window.quill.getText().trim().length) {
+  if (!window.quill.getText().trim().length && window.quill.getContents().ops.length <= 1) {
     $("#output-wrapper").empty().html('<span class="text-muted">\
         <i>To see the output, enter text and hit <b>Preview</b>.</i></span>');
   }
