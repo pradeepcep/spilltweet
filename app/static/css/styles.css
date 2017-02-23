@@ -48,6 +48,19 @@ img.logo {
   cursor: pointer;
 }
 
+/* Button to siwtch between a simple toolbar and the full toolbar */
+#modeswitch-button {
+  margin-right: 0 !important;
+}
+
+#modeswitch-button:hover {
+  cursor: pointer;
+}
+
+.ql-collapse.collapse {
+  display: none !important;
+}
+
 #preview-wrapper {
   visibility: hidden;
   position: absolute; /* so that it doesn't mess with the layout. */

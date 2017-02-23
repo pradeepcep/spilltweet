@@ -1,7 +1,50 @@
 {# The Quill.js editor toolbar #}
 {%- macro editor_toolbar() -%}
+{# The simpler toolbar options alone are displayed initially #}
 {# font family #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse">
+  <select class="ql-font">
+    <option selected="selected"></option>
+    <option value="serif"></option>
+    <option value="monospace"></option>
+    {# Add custom fonts #}
+    {% for font, font_family in config['FONT_NAMES'].iteritems() %}
+    <option value="{{ font.split(" ")|join('-')|lower }}">{{ font }}</option>
+    {% endfor %}
+  </select>
+</span>
+
+{# shortcut buttons for <h1> and <h2> #}
+<span class="ql-formats ql-collapse">
+  <button type="button" class="ql-header" value="1"></button>
+  <button type="button" class="ql-header" value="2"></button>
+</span>
+
+{# bold and italic #}
+<span class="ql-formats ql-collapse">
+  <button type="button" class="ql-bold"></button>
+  <button type="button" class="ql-italic"></button>
+</span>
+
+{# text align #}
+<span class="ql-formats ql-collapse">
+  <select class="ql-align">
+    <option selected="selected"></option>
+    <option value="center"></option>
+    <option value="right"></option>
+    <option value="justify"></option>
+  </select>
+</span>
+
+{# image #}
+<span class="ql-formats ql-collapse">
+  <button type="button" class="ql-image"></button>
+</span>
+{# end of simpler toolbar #}
+
+{# The extended, full toolbar (pro-mode) #}
+{# font family #}
+<span class="ql-formats ql-collapse collapse">
   <select class="ql-font">
     <option selected="selected"></option>
     <option value="serif"></option>
@@ -14,7 +57,7 @@
 </span>
 
 {# font size #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <select class="ql-size">
     <option value="small"></option>
     <option selected="selected"></option>
@@ -24,7 +67,7 @@
 </span>
 
 {# heading styles #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <select class="ql-header">
     <option value="1"></option>
     <option value="2"></option>
@@ -37,13 +80,13 @@
 </span>
 
 {# shortcut buttons for <h1> and <h2> #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <button type="button" class="ql-header" value="1"></button>
   <button type="button" class="ql-header" value="2"></button>
 </span>
 
 {# text align and color #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <select class="ql-align">
     <option selected="selected"></option>
     <option value="center"></option>
@@ -91,7 +134,7 @@
 </span>
 
 {# font weight and text decoration #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <button type="button" class="ql-bold"></button>
   <button type="button" class="ql-italic"></button>
   <button type="button" class="ql-underline"></button>
@@ -99,34 +142,41 @@
 </span>
 
 {# indents #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <button type="button" class="ql-indent" value="-1"></button>
   <button type="button" class="ql-indent" value="+1"></button>
 </span>
 
 {# blockquote and pre-formatted code #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <button type="button" class="ql-blockquote"></button>
   <button type="button" class="ql-code-block"></button>
 </span>
 
 {# subscript and superscript #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <button type="button" class="ql-script" value="super"></button>
   <button type="button" class="ql-script" value="sub"></button>
 </span>
 
 {# image #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <button type="button" class="ql-image"></button>
 </span>
 
 {# clear formatting #}
-<span class="ql-formats">
+<span class="ql-formats ql-collapse collapse">
   <button type="button" class="ql-clean"></button>
 </span>
 
-{# our very own preview button #}
+{# our very own mode-switch button and preview button #}
+{# toggle pro-mode #}
+<span id="modeswitch-button" class="ql-formats btn btn-sm btn-secondary">
+  <i class="fa fa-bolt fa-1x fa-fw ql-collapse"
+      title="Show advanced toolbar"></i>
+  <i class="fa fa-close fa-1x fa-fw ql-collapse collapse"
+      title="Show simplified toolbar"></i></span>
+
 <span id="preview-button" class="ql-formats btn btn-sm btn-primary">
   <i class="fa fa-eye fa-1x">&nbsp;</i>Preview</span>
 {%- endmacro %}

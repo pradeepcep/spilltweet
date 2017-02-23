@@ -105,6 +105,11 @@ $(document).ready(function() {
 // Preview button functionality.
 $(document).on("click", "#preview-button", updatePreview);
 
+// Mode-switch button functionality.
+$(document).on("click", "#modeswitch-button", function() {
+  $(".ql-collapse").toggleClass("collapse");
+});
+
 // Functionality for Edit button in preview mode.
 $(document).on("click", "#edit-again", function() {
   $('#preview-display').css('display', 'none');
