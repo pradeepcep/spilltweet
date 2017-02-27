@@ -64,7 +64,7 @@ function updateLivePreview() {
   // Display a message on the output when input is empty.
   if (!window.quill.getText().trim().length && window.quill.getContents().ops.length <= 1) {
     $("#livepreview-wrapper").empty().html('<span class="text-muted">\
-        <i>To see the output, enter text and hit <b>Preview</b>.</i></span>');
+        <i>Enter some text to see the output.</i></span>');
     $("#livepreview-wrapper").removeClass('has-content');
   }
   else {
@@ -161,7 +161,7 @@ $(document).on("submit", "#tweet-form", function(event) {
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
         <span aria-hidden="true">&times;</span>\
       </button>\
-      You must enter some text in the input and click Preview first.\
+      You must enter some text in the input first.\
     </div>\
     ');
     return false;
@@ -201,7 +201,7 @@ $(document).on("submit", "#tweet-form", function(event) {
         <div class="d-flex justify-content-center align-items-center"
             id="livepreview-wrapper">
           <span class="text-muted">
-            <i>To see the output, enter text and hit <b>Preview</b>.</i>
+            <i>Enter some text to see the output.</i>
           </span>
         </div>
         <div class="text-center text-muted">
