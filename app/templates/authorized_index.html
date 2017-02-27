@@ -37,7 +37,7 @@ function initializeQuill() {
   window.quill = new Quill('#input', options);
 }
 
-function updatePreview() {
+function showPreview() {
   // Display a message on the output when input is empty.
   if (!window.quill.getText().trim().length && window.quill.getContents().ops.length <= 1) {
     $("#output-wrapper").empty().html('<span class="text-muted">\
@@ -58,6 +58,28 @@ function updatePreview() {
 
   $('#preview-display').css('display', 'block');
   $('#input-display').css('display', 'none');
+}
+
+function updateLivePreview() {
+  // Display a message on the output when input is empty.
+  if (!window.quill.getText().trim().length && window.quill.getContents().ops.length <= 1) {
+    $("#livepreview-wrapper").empty().html('<span class="text-muted">\
+        <i>To see the output, enter text and hit <b>Preview</b>.</i></span>');
+    $("#livepreview-wrapper").removeClass('has-content');
+  }
+  else {
+    $("#livepreview-wrapper").addClass('has-content');
+    $("#preview-wrapper").contents().find("#preview").html(
+        document.querySelector(".ql-editor").innerHTML);
+    html2canvas($("#preview", window.previewContext), {
+      onrendered: function(canvas) {
+        canvas.id="output";
+        $("#livepreview-wrapper").empty().html('<img src="' +
+            canvas.toDataURL("image/png") + '" id="preview-img" />');
+        $("#imagedata").val(canvas.toDataURL("image/png"));
+      }
+    });
+  }
 }
 
 $(document).ready(function() {
@@ -100,10 +122,12 @@ $(document).ready(function() {
   $("body", window.previewContext).html('<div class="ql-container ql-snow">\
       <div id="preview" class="ql-editor"></div></div>');
   initializeQuill();
+  setInterval(updateLivePreview, 3000);
+
 });
 
 // Preview button functionality.
-$(document).on("click", "#preview-button", updatePreview);
+$(document).on("click", "#livepreview-wrapper.has-content", showPreview);
 
 // Mode-switch button functionality.
 $(document).on("click", "#modeswitch-button", function() {
@@ -164,9 +188,30 @@ $(document).on("submit", "#tweet-form", function(event) {
 
 {% block content %}
 <div class="container-fluid pt-2" id="input-display">
-  <div id="input-wrapper">
-    <div id="toolbar">{{ editor_toolbar() }}</div>
-    <div id="input"></div>
+  <div class="row">
+    <div id="input-wrapper" class="col-9">
+      <div id="toolbar">{{ editor_toolbar() }}</div>
+      <div id="input"></div>
+    </div>
+    <div class="col-3 m-0 p-1">
+      <div class="pb-3 p-0 m-0">
+        <button class="btn btn-primary" style="width: 100%; ">Post to Twitter</button>
+      </div>
+      <div class=" bg-faded">
+        <div class="d-flex justify-content-center align-items-center"
+            id="livepreview-wrapper">
+          <span class="text-muted">
+            <i>To see the output, enter text and hit <b>Preview</b>.</i>
+          </span>
+        </div>
+        <div class="text-center text-muted">
+          <small>Click on the image to open full-size.</small>
+        </div>
+        <div class="p-2">
+          Controls
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="container-fluid pt-2" id="preview-display">
