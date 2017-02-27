@@ -71,6 +71,10 @@ img.logo {
   margin-bottom: 0.1em;
 }
 
+.livepreview-col .current-value {
+  font-size: 0.8em;
+}
+
 #livepreview-wrapper {
   width: 100%;
   height: 20em;

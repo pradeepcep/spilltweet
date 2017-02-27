@@ -67,6 +67,13 @@ function updateLivePreview() {
     $("#livepreview-wrapper").empty().html('<span class="text-muted">\
         <i>Enter some text to see the output.</i></span>');
     $("#livepreview-wrapper").removeClass('has-content');
+
+    // When no text is there in the input, clear the current property values
+    // of the output image from the display.
+    $('#output-width-current').text('...');
+    $('#output-height-current').text('...');
+    $('#output-padding-current').text('...');
+    $('#output-border-current').text('...');
   }
   else {
     $("#livepreview-wrapper").addClass('has-content');
@@ -80,6 +87,23 @@ function updateLivePreview() {
         $("#imagedata").val(canvas.toDataURL("image/png"));
         // Prevent scroll to top on updating the live preview.
         $(window).scrollTop(scrollPosition);
+
+        // Fetch the current properties of the output image and show them near
+        // the inputs in the "image properties" form.
+        $('#output-width-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview")
+            .outerWidth()) + 'px');
+        $('#output-height-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview")
+            .outerHeight()) + 'px');
+        // Assuming we're setting equal padding on all sides, we can read the
+        // padding from any random side.
+        $('#output-padding-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview").css('padding-left').split('px')[0]) + 'px');
+        // Assuming the borders on all four sides as identical.
+        $('#output-border-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview")
+            .css('border-left-width').split('px')[0]) + 'px');
       }
     });
   }
@@ -96,16 +120,24 @@ function updateOutputImage() {
     'output-border'
   ];
   var propValues = {};
+  var propDefaults = {
+    'output-width': 'auto',
+    'output-height': 'auto',
+    'output-padding': '20px',
+    'output-border': 'none'
+  };
 
   props.forEach(function(prop) {
-    propValues[prop] = $('#' + prop).val();
-    // TODO: Implement some sort of validation here.
     var suffix = 'px';
     if (prop == 'output-border') {
       suffix += ' solid #cccccc';
       // TODO: Let the user choose the border color.
     }
-    $("#preview-wrapper").contents().find("#preview").css(prop.split('-')[1], propValues[prop] + suffix);
+
+    // TODO: Implement some sort of validation here.
+    propValues[prop] = $('#' + prop).val().length > 0 ? $('#' + prop).val() + suffix : propDefaults[prop];
+
+    $("#preview-wrapper").contents().find("#preview").css(prop.split('-')[1], propValues[prop]);
   });
 }
 
@@ -246,6 +278,7 @@ $(document).ready(function () {
               <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
                   title="The width of the output image in pixels. Leave this {#
                   #}blank to let Spilltweet pick a suitable value."></i>
+              <small class="current-value text-muted">[<span id="output-width-current">...</span>]</small>
               <div class="input-group input-group-sm">
                 <input type="text" id="output-width" class="form-control"
                     placeholder="Width" />
@@ -257,6 +290,7 @@ $(document).ready(function () {
               <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
                   title="The height of the output image in pixels. Leave this{#
                   #} blank to let Spilltweet pick a suitable value."></i>
+              <small class="current-value text-muted">[<span id="output-height-current">...</span>]</small>
               <div class="input-group input-group-sm">
                 <input type="text" id="output-height" class="form-control"
                     placeholder="Height" />
@@ -271,6 +305,7 @@ $(document).ready(function () {
                   title="The space around the content of the image, in {#
                   #}pixels. Leave this blank to enforce the default value of {#
                   #}20px."></i>
+              <small class="current-value text-muted">[<span id="output-padding-current">...</span>]</small>
               <div class="input-group input-group-sm">
                 <input type="text" id="output-padding" class="form-control"
                     placeholder="Padding" />
@@ -282,6 +317,7 @@ $(document).ready(function () {
               <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
                   title="The weight of the image's border, in pixels. Leave {#
                   #} this blank for no border, which is the default."></i>
+              <small class="current-value text-muted">[<span id="output-border-current">...</span>]</small>
               <div class="input-group input-group-sm">
                 <input type="text" id="output-border" class="form-control" placeholder="Border" />
                 <span class="input-group-addon">px</span>
