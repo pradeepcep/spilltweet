@@ -10,6 +10,10 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+.btn:hover {
+  cursor: pointer;
+}
+
 .navbar .nav-item .tw-signin-img {
   margin-top: -0.2em;
 }
@@ -62,6 +66,11 @@ img.logo {
 }
 
 /* Live preview in right sidebar */
+.livepreview-col label {
+  font-size: 0.9em;
+  margin-bottom: 0.1em;
+}
+
 #livepreview-wrapper {
   width: 100%;
   height: 20em;

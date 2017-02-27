@@ -85,6 +85,30 @@ function updateLivePreview() {
   }
 }
 
+// Function to modify the output image.
+// Gets the values from the image properties inputs and modifies the image
+// accordingly.
+function updateOutputImage() {
+  var props = [
+    'output-width',
+    'output-height',
+    'output-padding',
+    'output-border'
+  ];
+  var propValues = {};
+
+  props.forEach(function(prop) {
+    propValues[prop] = $('#' + prop).val();
+    // TODO: Implement some sort of validation here.
+    var suffix = 'px';
+    if (prop == 'output-border') {
+      suffix += ' solid #cccccc';
+      // TODO: Let the user choose the border color.
+    }
+    $("#preview-wrapper").contents().find("#preview").css(prop.split('-')[1], propValues[prop] + suffix);
+  });
+}
+
 $(document).ready(function() {
   window.previewContext = $("iframe")[0].contentWindow.document;
   $("head", window.previewContext).html('\
@@ -103,12 +127,12 @@ $(document).ready(function() {
         margin: 0;\
         /* Make image size independant of screen resolution by explicitly\
         specifying the sizes in pixels. */\
-        padding: 20px !important;\
-        max-width: 600px;\
-        max-height: 600px;\
+        padding: 20px;\
+        max-width: 1000px;\
+        max-height: 1000px;\
         background-color: #ffffff;\
         display: inline-block;\
-        height: auto !important;\
+        height: auto;\
         overflow: visible !important;\
       }\
       #preview blockquote {\
@@ -170,6 +194,11 @@ $(document).on("submit", "#tweet-form", function(event) {
     return false;
   }
 });
+
+// Initialize the tooltips.
+$(document).ready(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
 </script>
 
 <style>
@@ -196,11 +225,11 @@ $(document).on("submit", "#tweet-form", function(event) {
       <div id="toolbar">{{ editor_toolbar() }}</div>
       <div id="input"></div>
     </div>
-    <div class="col-3 m-0 p-1">
+    <div class="col-3 m-0 p-1 livepreview-col">
       <div class="pb-3 p-0 m-0">
         <button class="btn btn-primary" style="width: 100%; ">Post to Twitter</button>
       </div>
-      <div class=" bg-faded">
+      <div class="bg-faded">
         <div class="d-flex justify-content-center align-items-center"
             id="livepreview-wrapper">
           <span class="text-muted">
@@ -211,7 +240,60 @@ $(document).on("submit", "#tweet-form", function(event) {
           <small>Click on the image to open full-size.</small>
         </div>
         <div class="p-2">
-          Controls
+          <div class="row m-0 p-0">
+            <div class="col m-0 p-1">
+              <label for="output-width">Width:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The width of the output image in pixels. Leave this {#
+                  #}blank to let Spilltweet pick a suitable value."></i>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-width" class="form-control"
+                    placeholder="Width" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+            <div class="col m-0 p-1">
+              <label for="output-height">Height:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The height of the output image in pixels. Leave this{#
+                  #} blank to let Spilltweet pick a suitable value."></i>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-height" class="form-control"
+                    placeholder="Height" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0 p-0">
+            <div class="col m-0 p-1">
+              <label for="output-padding">Padding:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The space around the content of the image, in {#
+                  #}pixels. Leave this blank to enforce the default value of {#
+                  #}20px."></i>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-padding" class="form-control"
+                    placeholder="Padding" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+            <div class="col m-0 p-1">
+              <label for="output-border">Border:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The weight of the image's border, in pixels. Leave {#
+                  #} this blank for no border, which is the default."></i>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-border" class="form-control" placeholder="Border" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0 p-0">
+            <div class="col m-0 p-1">
+              <button type="button" onclick="updateOutputImage()"
+                  class="btn btn-primary btn-sm">Apply</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
