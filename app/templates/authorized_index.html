@@ -61,6 +61,7 @@ function showPreview() {
 }
 
 function updateLivePreview() {
+  var scrollPosition = $(window).scrollTop();
   // Display a message on the output when input is empty.
   if (!window.quill.getText().trim().length && window.quill.getContents().ops.length <= 1) {
     $("#livepreview-wrapper").empty().html('<span class="text-muted">\
@@ -77,6 +78,8 @@ function updateLivePreview() {
         $("#livepreview-wrapper").empty().html('<img src="' +
             canvas.toDataURL("image/png") + '" id="preview-img" />');
         $("#imagedata").val(canvas.toDataURL("image/png"));
+        // Prevent scroll to top on updating the live preview.
+        $(window).scrollTop(scrollPosition);
       }
     });
   }
