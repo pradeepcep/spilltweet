@@ -7,15 +7,13 @@ Spilltweet is a neat little tool that lets you post large tweets ( > 140 charact
 
 > **Please note**: This is a guide for people who want to set up Spilltweet on their own. If you are a Spilltweet user and looking for help using the app, [read the help section](http://spilltweet.com/help). You can also access the help section by clicking `Help` at the top-right section of the page on Spilltweet.
 
--
 
-### How it works
+## How it works
 
 Spilltweet renders the resulting markup of your text in a hidden `iframe`. This markup is then converted to a `canvas` object, from which we get the image. The image is then sent to the server, which posts it on Twitter.
 
--
 
-### Getting Spilltweet
+## Getting Spilltweet
 
 Clone this repository using `git`:
 ```
@@ -25,9 +23,8 @@ Clone this repository using `git`:
 
 Or [download the source](https://github.com/cepradeep/spilltweet/archive/master.zip) as a zip file.
 
--
 
-### Dependencies
+## Dependencies
 
 Spilltweet runs on the `Flask` web framework. The recommended way to setup Spilltweet for development is inside a `virtualenv`. After ensuring you have `python`, `pip` and `virtualenv` installed, run:
 
@@ -37,9 +34,8 @@ Spilltweet runs on the `Flask` web framework. The recommended way to setup Spill
  $ pip install -r requirements.txt
 ```
 
--
 
-### Configuration
+## Configuration
 
 Create a `config.py` file by copying the sample configuration file included with Spilltweet.
 ```
@@ -63,9 +59,8 @@ Save `config.py` and exit.
 
 > **Note:** Never include this file in your repo or share it publicly, as this contains your API keys.
 
--
 
-### Running Spilltweet
+## Running Spilltweet
 
 To run Spilltweet for development, you can use the `runserver.py` script that comes bundled with Spilltweet.
 ```
@@ -81,21 +76,21 @@ If you don't want to flood your Twitter timeline while testing, you can set the 
  $ ./runserver.py
 ```
 
--
 
-### Copying and Distributing
+## Copying and Distributing
 
 Spilltweet is a hobby project. You are welcome to use Spilltweet, copy it, tinker with it and distribute it. You may use it for commercial purposes, but you may not sell / charge for Spilltweet or the service / functionality it provides.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Attribution-ShareAlike 4.0 International License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
 
--
 
-### Credits
+## Credits
 
 Spilltweet relies on [HTML2Canvas](https://github.com/niklasvh/html2canvas) and [Quill.js](https://github.com/quilljs/quill), and is thankful to their developers.
 
--
+
+---
+
 
 All copyrights and trademarks belong to their respective owners.
 
