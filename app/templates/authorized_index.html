@@ -37,7 +37,7 @@ function initializeQuill() {
   window.quill = new Quill('#input', options);
 }
 
-function updatePreview() {
+function showPreview() {
   // Display a message on the output when input is empty.
   if (!window.quill.getText().trim().length && window.quill.getContents().ops.length <= 1) {
     $("#output-wrapper").empty().html('<span class="text-muted">\
@@ -60,6 +60,87 @@ function updatePreview() {
   $('#input-display').css('display', 'none');
 }
 
+function updateLivePreview() {
+  var scrollPosition = $(window).scrollTop();
+  // Display a message on the output when input is empty.
+  if (!window.quill.getText().trim().length && window.quill.getContents().ops.length <= 1) {
+    $("#livepreview-wrapper").empty().html('<span class="text-muted">\
+        <i>Enter some text to see the output.</i></span>');
+    $("#livepreview-wrapper").removeClass('has-content');
+
+    // When no text is there in the input, clear the current property values
+    // of the output image from the display.
+    $('#output-width-current').text('...');
+    $('#output-height-current').text('...');
+    $('#output-padding-current').text('...');
+    $('#output-border-current').text('...');
+  }
+  else {
+    $("#livepreview-wrapper").addClass('has-content');
+    $("#preview-wrapper").contents().find("#preview").html(
+        document.querySelector(".ql-editor").innerHTML);
+    html2canvas($("#preview", window.previewContext), {
+      onrendered: function(canvas) {
+        canvas.id="output";
+        $("#livepreview-wrapper").empty().html('<img src="' +
+            canvas.toDataURL("image/png") + '" id="preview-img" />');
+        $("#imagedata").val(canvas.toDataURL("image/png"));
+        // Prevent scroll to top on updating the live preview.
+        $(window).scrollTop(scrollPosition);
+
+        // Fetch the current properties of the output image and show them near
+        // the inputs in the "image properties" form.
+        $('#output-width-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview")
+            .outerWidth()) + 'px');
+        $('#output-height-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview")
+            .outerHeight()) + 'px');
+        // Assuming we're setting equal padding on all sides, we can read the
+        // padding from any random side.
+        $('#output-padding-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview").css('padding-left').split('px')[0]) + 'px');
+        // Assuming the borders on all four sides as identical.
+        $('#output-border-current').text(
+          Math.round($("#preview-wrapper").contents().find("#preview")
+            .css('border-left-width').split('px')[0]) + 'px');
+      }
+    });
+  }
+}
+
+// Function to modify the output image.
+// Gets the values from the image properties inputs and modifies the image
+// accordingly.
+function updateOutputImage() {
+  var props = [
+    'output-width',
+    'output-height',
+    'output-padding',
+    'output-border'
+  ];
+  var propValues = {};
+  var propDefaults = {
+    'output-width': 'auto',
+    'output-height': 'auto',
+    'output-padding': '20px',
+    'output-border': 'none'
+  };
+
+  props.forEach(function(prop) {
+    var suffix = 'px';
+    if (prop == 'output-border') {
+      suffix += ' solid #cccccc';
+      // TODO: Let the user choose the border color.
+    }
+
+    // TODO: Implement some sort of validation here.
+    propValues[prop] = $('#' + prop).val().length > 0 ? $('#' + prop).val() + suffix : propDefaults[prop];
+
+    $("#preview-wrapper").contents().find("#preview").css(prop.split('-')[1], propValues[prop]);
+  });
+}
+
 $(document).ready(function() {
   window.previewContext = $("iframe")[0].contentWindow.document;
   $("head", window.previewContext).html('\
@@ -78,12 +159,12 @@ $(document).ready(function() {
         margin: 0;\
         /* Make image size independant of screen resolution by explicitly\
         specifying the sizes in pixels. */\
-        padding: 20px !important;\
-        max-width: 600px;\
-        max-height: 600px;\
+        padding: 20px;\
+        max-width: 1000px;\
+        max-height: 1000px;\
         background-color: #ffffff;\
         display: inline-block;\
-        height: auto !important;\
+        height: auto;\
         overflow: visible !important;\
       }\
       #preview blockquote {\
@@ -100,10 +181,17 @@ $(document).ready(function() {
   $("body", window.previewContext).html('<div class="ql-container ql-snow">\
       <div id="preview" class="ql-editor"></div></div>');
   initializeQuill();
+  setInterval(updateLivePreview, 3000);
+
 });
 
 // Preview button functionality.
-$(document).on("click", "#preview-button", updatePreview);
+$(document).on("click", "#livepreview-wrapper.has-content", showPreview);
+
+// Mode-switch button functionality.
+$(document).on("click", "#modeswitch-button", function() {
+  $(".ql-collapse").toggleClass("collapse");
+});
 
 // Functionality for Edit button in preview mode.
 $(document).on("click", "#edit-again", function() {
@@ -132,11 +220,16 @@ $(document).on("submit", "#tweet-form", function(event) {
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">\
         <span aria-hidden="true">&times;</span>\
       </button>\
-      You must enter some text in the input and click Preview first.\
+      You must enter some text in the input first.\
     </div>\
     ');
     return false;
   }
+});
+
+// Initialize the tooltips.
+$(document).ready(function () {
+  $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 
@@ -159,9 +252,87 @@ $(document).on("submit", "#tweet-form", function(event) {
 
 {% block content %}
 <div class="container-fluid pt-2" id="input-display">
-  <div id="input-wrapper">
-    <div id="toolbar">{{ editor_toolbar() }}</div>
-    <div id="input"></div>
+  <div class="row">
+    <div id="input-wrapper" class="col-9">
+      <div id="toolbar">{{ editor_toolbar() }}</div>
+      <div id="input"></div>
+    </div>
+    <div class="col-3 m-0 p-1 livepreview-col">
+      <div class="pb-3 p-0 m-0">
+        <button class="btn btn-primary" style="width: 100%; ">Post to Twitter</button>
+      </div>
+      <div class="bg-faded">
+        <div class="d-flex justify-content-center align-items-center"
+            id="livepreview-wrapper">
+          <span class="text-muted">
+            <i>Enter some text to see the output.</i>
+          </span>
+        </div>
+        <div class="text-center text-muted">
+          <small>Click on the image to open full-size.</small>
+        </div>
+        <div class="p-2">
+          <div class="row m-0 p-0">
+            <div class="col m-0 p-1">
+              <label for="output-width">Width:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The width of the output image in pixels. Leave this {#
+                  #}blank to let Spilltweet pick a suitable value."></i>
+              <small class="current-value text-muted">[<span id="output-width-current">...</span>]</small>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-width" class="form-control"
+                    placeholder="Width" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+            <div class="col m-0 p-1">
+              <label for="output-height">Height:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The height of the output image in pixels. Leave this{#
+                  #} blank to let Spilltweet pick a suitable value."></i>
+              <small class="current-value text-muted">[<span id="output-height-current">...</span>]</small>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-height" class="form-control"
+                    placeholder="Height" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0 p-0">
+            <div class="col m-0 p-1">
+              <label for="output-padding">Padding:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The space around the content of the image, in {#
+                  #}pixels. Leave this blank to enforce the default value of {#
+                  #}20px."></i>
+              <small class="current-value text-muted">[<span id="output-padding-current">...</span>]</small>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-padding" class="form-control"
+                    placeholder="Padding" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+            <div class="col m-0 p-1">
+              <label for="output-border">Border:</label>
+              <i class="fa fa-question-circle fa-fw" data-toggle="tooltip"
+                  title="The weight of the image's border, in pixels. Leave {#
+                  #} this blank for no border, which is the default."></i>
+              <small class="current-value text-muted">[<span id="output-border-current">...</span>]</small>
+              <div class="input-group input-group-sm">
+                <input type="text" id="output-border" class="form-control" placeholder="Border" />
+                <span class="input-group-addon">px</span>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0 p-0">
+            <div class="col m-0 p-1">
+              <button type="button" onclick="updateOutputImage()"
+                  class="btn btn-primary btn-sm">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="container-fluid pt-2" id="preview-display">

@@ -10,6 +10,10 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+.btn:hover {
+  cursor: pointer;
+}
+
 .navbar .nav-item .tw-signin-img {
   margin-top: -0.2em;
 }
@@ -46,6 +50,46 @@ img.logo {
 
 #preview-button:hover {
   cursor: pointer;
+}
+
+/* Button to siwtch between a simple toolbar and the full toolbar */
+#modeswitch-button {
+  margin-right: 0 !important;
+}
+
+#modeswitch-button:hover {
+  cursor: pointer;
+}
+
+.ql-collapse.collapse {
+  display: none !important;
+}
+
+/* Live preview in right sidebar */
+.livepreview-col label {
+  font-size: 0.9em;
+  margin-bottom: 0.1em;
+}
+
+.livepreview-col .current-value {
+  font-size: 0.8em;
+}
+
+#livepreview-wrapper {
+  width: 100%;
+  height: 20em;
+  padding: 1em 0;
+  background-image: url('../transparent.png');
+  background-repeat: repeat repeat;
+}
+
+#livepreview-wrapper.has-content:hover {
+  cursor: zoom-in;
+}
+
+#livepreview-wrapper > img {
+  max-width: 95%;
+  max-height: 95%;
 }
 
 #preview-wrapper {
